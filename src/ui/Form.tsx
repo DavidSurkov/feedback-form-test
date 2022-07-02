@@ -24,8 +24,8 @@ const Input = styled.input`
   margin-top: 10px;
   border: 1px solid rgba(220, 220, 220, 1);
   border-radius: 10px;
-  padding: 0 10px;
   font-size: 18px;
+  padding: 31px 46px;
 `;
 const Textarea = styled.textarea`
   max-width: 550px;
@@ -34,7 +34,7 @@ const Textarea = styled.textarea`
   border: 1px solid rgba(220, 220, 220, 1);
   border-radius: 10px;
   resize: none;
-  padding: 10px;
+  padding: 31px 46px 120px;
   font-size: 18px;
 `;
 const Button = styled.button`
@@ -67,23 +67,30 @@ export type FormType = {
   message: string;
 }
 export const Form = () => {
+
   const server = useTypedSelector(state => state.form);
+
   const dispatch = useTypedDispatch();
+
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [message, setMessage] = useState<string>('');
   const [nameError, setNameError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [messageError, setMessageError] = useState('');
+
   const onChangeText = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.currentTarget.value)
   }
+
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.currentTarget.value)
   }
+
   const onChangeMessage = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.currentTarget.value)
   }
+
   const onSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!name.trim()) setNameError('Name is required')
@@ -93,8 +100,6 @@ export const Form = () => {
     if (!message.trim()) setMessageError('Message is required')
     else setMessageError('')
     if (name.trim() && email.trim() && message.trim()) dispatch(submitFormTC({name, email, message}))
-    /*name.trim() && console.log(name.trim());
-    setName(name.trim());*/
   };
 
   return (

@@ -14,25 +14,33 @@ const Container = styled.div`
   height: 20vh;
   display: flex;
   align-items: center;
+  overflow: hidden;
 `;
+
 const Icon = styled.img``;
+
 const GreenSmile = styled.img`
   margin-left: 60%;
   align-self: flex-start;
 `;
+
 const YellowSmile = styled.img`
   justify-self: flex-end;
 `;
+
 const PinkSmile = styled.img`
-  height: 20vh;
   align-self: flex-start;
+  height: 200px;
+  width: 200px;
 `;
+
 const IconBlock = styled.div`
   margin-left: 5%;
   width: 200px;
   display: flex;
   justify-content: space-around;
 `;
+
 export const Footer = () => {
   return (
     <Container>

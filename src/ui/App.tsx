@@ -39,6 +39,8 @@ const Img = styled.img`
   max-height: 85vh;
 `;
 const YellowSmile = styled.img`
+  position: absolute;
+  margin-top: -110px;
 `;
 const YellowSmileDown = styled.img`
   align-self: flex-start;
