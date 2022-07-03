@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from "styled-components";
+import styled from 'styled-components';
 import facebookSvg from './assets/icons/facebook.svg';
 import twitterSvg from './assets/icons/twitter.svg';
 import linkedinSvg from './assets/icons/linkedin.svg';
@@ -44,16 +44,15 @@ const IconBlock = styled.div`
 export const Footer = () => {
   return (
     <Container>
-      <PinkSmile src={pinkSmile} alt={'smile'}/>
+      <PinkSmile src={pinkSmile} alt={'smile'} />
       <IconBlock>
-        <Icon src={facebookSvg}/>
-        <Icon src={twitterSvg}/>
-        <Icon src={linkedinSvg}/>
-        <Icon src={pinterestSvg}/>
+        <Icon src={facebookSvg} />
+        <Icon src={twitterSvg} />
+        <Icon src={linkedinSvg} />
+        <Icon src={pinterestSvg} />
       </IconBlock>
-      <GreenSmile src={greenSmile} alt={'smile'}/>
-      <YellowSmile src={yellowSmile} alt={'smile'}/>
+      <GreenSmile src={greenSmile} alt={'smile'} />
+      <YellowSmile src={yellowSmile} alt={'smile'} />
     </Container>
   );
 };
-

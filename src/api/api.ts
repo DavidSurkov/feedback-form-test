@@ -1,5 +1,5 @@
-import {FormType} from "../ui/Form";
-import axios from "axios";
+import { FormType } from '../ui/Form';
+import axios from 'axios';
 
 export const api = {
   send(form: FormType) {
@@ -9,6 +9,6 @@ export const api = {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
       },
-    })
-  }
+    });
+  },
 };

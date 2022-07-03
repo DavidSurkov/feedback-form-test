@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
-import {Form} from "./Form";
-import styled from "styled-components";
-import {Footer} from "./Footer";
+import { Form } from './Form';
+import styled from 'styled-components';
+import { Footer } from './Footer';
 import mapSvg from './assets/map.svg';
 import yellowSmile from './assets/yellowSmile.svg';
 import yellowSmileDown from './assets/yellowSmileDown.svg';
@@ -52,18 +52,18 @@ function App() {
     <Container className="App">
       <Body>
         <FormBlock>
-          <YellowSmile src={yellowSmile} alt={'smile'}/>
-          <Form/>
+          <YellowSmile src={yellowSmile} alt={'smile'} />
+          <Form />
         </FormBlock>
         <MapBlock>
           <StyledSvgBlock>
-            <YellowSmileDown src={yellowSmileDown} alt={'smile'}/>
-            <PinkSmile src={pinkSmile} alt={'smile'}/>
+            <YellowSmileDown src={yellowSmileDown} alt={'smile'} />
+            <PinkSmile src={pinkSmile} alt={'smile'} />
           </StyledSvgBlock>
-          <Img src={mapSvg}/>
+          <Img src={mapSvg} />
         </MapBlock>
       </Body>
-      <Footer/>
+      <Footer />
     </Container>
   );
 }

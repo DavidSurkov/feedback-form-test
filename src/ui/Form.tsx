@@ -1,13 +1,15 @@
-import React, {ChangeEvent, SyntheticEvent, useState} from 'react';
-import styled from "styled-components";
-import {useTypedDispatch, useTypedSelector} from "../bll/store";
-import {submitFormTC} from "../bll/formReducer";
+import React from 'react';
+import styled from 'styled-components';
+import { useTypedDispatch, useTypedSelector } from '../bll/store';
+import { submitFormTC } from '../bll/formReducer';
+import { useForm } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 
 const FormBlock = styled.form`
   width: 550px;
   display: flex;
   flex-direction: column;
-  color: #2D2D2D;
+  color: #2d2d2d;
   margin-left: 25%;
 `;
 const Title = styled.div`
@@ -18,20 +20,20 @@ const Title = styled.div`
   color: rgba(62, 62, 62, 1);
   /* or 18px */
 `;
-const Input = styled.input`
+const Input = styled.input<{ error?: boolean }>`
   max-width: 550px;
   max-height: 90px;
   margin-top: 10px;
-  border: 1px solid rgba(220, 220, 220, 1);
+  border: ${(props) => (props.error ? '1px solid deeppink' : '1px solid rgba(220, 220, 220, 1)')};
   border-radius: 10px;
   font-size: 18px;
   padding: 31px 46px;
 `;
-const Textarea = styled.textarea`
+const Textarea = styled.textarea<{ error?: boolean }>`
   max-width: 550px;
   max-height: 190px;
   margin-top: 10px;
-  border: 1px solid rgba(220, 220, 220, 1);
+  border: ${(props) => (props.error ? '1px solid deeppink' : '1px solid rgba(220, 220, 220, 1)')};
   border-radius: 10px;
   resize: none;
   padding: 31px 46px 120px;
@@ -41,7 +43,7 @@ const Button = styled.button`
   /* Rectangle 21 */
   width: 218px;
   height: 73px;
-  background: #FAD34F;
+  background: #fad34f;
   border-radius: 500px;
   border: none;
   font-size: 18px;
@@ -65,60 +67,67 @@ export type FormType = {
   name: string;
   email: string;
   message: string;
-}
-export const Form = () => {
+};
 
-  const server = useTypedSelector(state => state.form);
+const minInputLength = {
+  value: 2,
+  message: 'Minimum length is 2 symbols.',
+};
+
+const re = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+const emailPattern = {
+  value: re,
+  message: 'Email is not correct',
+};
+
+export const Form = () => {
+  const server = useTypedSelector((state) => state.form);
 
   const dispatch = useTypedDispatch();
 
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [message, setMessage] = useState<string>('');
-  const [nameError, setNameError] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [messageError, setMessageError] = useState('');
+  const requiredMessage = (name: string): string => `${name} is required.`;
 
-  const onChangeText = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(e.currentTarget.value)
-  }
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormType>();
 
-  const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.currentTarget.value)
-  }
-
-  const onChangeMessage = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.currentTarget.value)
-  }
-
-  const onSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!name.trim()) setNameError('Name is required')
-    else setNameError('')
-    if (!email.trim()) setEmailError('Email is required')
-    else setEmailError('')
-    if (!message.trim()) setMessageError('Message is required')
-    else setMessageError('')
-    if (name.trim() && email.trim() && message.trim()) dispatch(submitFormTC({name, email, message}))
+  const onSubmit = (data: FormType) => {
+    dispatch(submitFormTC(data));
+    reset();
   };
-
   return (
-    <FormBlock onSubmit={onSubmit}>
+    <FormBlock onSubmit={handleSubmit(onSubmit)}>
       <Title>Reach out to us!</Title>
-      <Input onChange={onChangeText} value={name} placeholder={'Your name*'}/>
-      <Input onChange={onChangeEmail} value={email} placeholder={'Your e-mail*'}/>
-      <Textarea onChange={onChangeMessage} value={message} placeholder={'Your message*'}/>
+      <Input
+        error={!!errors.name}
+        {...register('name', { required: requiredMessage('Name'), minLength: minInputLength })}
+        placeholder={'Your name*'}
+      />
+      <Input
+        error={!!errors.email}
+        {...register('email', { required: requiredMessage('Email'), pattern: emailPattern })}
+        placeholder={'Your e-mail*'}
+      />
+      <Textarea
+        error={!!errors.message}
+        {...register('message', { required: requiredMessage('Message') })}
+        placeholder={'Your message*'}
+      />
       <ButtonBlock>
         <Button>Send message</Button>
         <ErrorBlock>
-          <span>{nameError}</span>
-          <span>{emailError}</span>
-          <span>{messageError}</span>
-          <span>{server.error}</span>
-          <span style={{color: 'forestgreen'}}>{server.success}</span>
+          <ErrorMessage name="name" errors={errors} render={({ message }) => <span>{message}</span>} />
+          <ErrorMessage name="email" errors={errors} render={({ message }) => <span>{message}</span>} />
+          <ErrorMessage name="message" errors={errors} render={({ message }) => <span>{message}</span>} />
+          {server.error?.map((e) => (
+            <span>{e}</span>
+          ))}
+          <span style={{ color: 'forestgreen' }}>{server.success}</span>
         </ErrorBlock>
       </ButtonBlock>
     </FormBlock>
   );
 };
-
