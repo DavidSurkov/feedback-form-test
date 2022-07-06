@@ -2,35 +2,45 @@ import { FormType } from '../ui/Form';
 import { AppThunk } from './store';
 import { api } from '../api/api';
 
-const initState = {} as FormStateType;
+const initState = {
+  serverMessage: [],
+  isLoading: false,
+};
 type FormStateType = {
-  error: string[];
-  success: string;
+  serverMessage: string[];
+  isLoading: boolean;
 };
 export const formReducer = (state: FormStateType = initState, action: FormActionType): FormStateType => {
   switch (action.type) {
-    case 'form/SET-SERVER-ERROR': {
-      return { ...state, error: action.error };
+    case 'form/SET-SERVER-MESSAGE': {
+      return { ...state, serverMessage: action.error };
     }
-    case 'form/SET-SERVER-SUCCESS': {
-      return { ...state, success: action.success };
+    case 'form/SET-IS-LOADING': {
+      return { ...state, isLoading: action.isLoading };
     }
     default:
       return state;
   }
 };
-const setServerError = (error: string[]) => ({ type: 'form/SET-SERVER-ERROR', error } as const);
-const setServerSuccess = (success: string) => ({ type: 'form/SET-SERVER-SUCCESS', success } as const);
+export const setServerMessage = (error: string[]) => ({ type: 'form/SET-SERVER-MESSAGE', error } as const);
+const setIsLoading = (isLoading: boolean) => ({ type: 'form/SET-IS-LOADING', isLoading } as const);
 
 export const submitFormTC =
   (form: FormType): AppThunk =>
   async (dispatch) => {
     try {
+      dispatch(setIsLoading(true));
       await api.send(form);
-      dispatch(setServerSuccess('success'));
+      dispatch(setServerMessage(['success']));
     } catch (e: any) {
-      dispatch(setServerError(e.response.data.message));
+      if (!!e.response) {
+        dispatch(setServerMessage(e.response.data.message));
+      } else {
+        dispatch(setServerMessage(['Some error has occurred']));
+      }
+    } finally {
+      dispatch(setIsLoading(false));
     }
   };
 
-export type FormActionType = ReturnType<typeof setServerError> | ReturnType<typeof setServerSuccess>;
+export type FormActionType = ReturnType<typeof setServerMessage> | ReturnType<typeof setIsLoading>;

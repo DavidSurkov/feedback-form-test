@@ -9,9 +9,9 @@ import yellowSmile from './assets/yellowSmile.svg';
 import pinkSmile from './assets/pinkSmile.svg';
 
 const Container = styled.div`
+  position: relative;
   background-color: rgba(250, 250, 250, 1);
   border: 1px solid rgba(216, 216, 216, 1);
-  height: 20vh;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -20,12 +20,14 @@ const Container = styled.div`
 const Icon = styled.img``;
 
 const GreenSmile = styled.img`
-  margin-left: 60%;
-  align-self: flex-start;
+  position: absolute;
+  top: 0;
+  right: 10%;
 `;
 
 const YellowSmile = styled.img`
-  justify-self: flex-end;
+  position: absolute;
+  right: -20px;
 `;
 
 const PinkSmile = styled.img`
@@ -36,9 +38,12 @@ const PinkSmile = styled.img`
 
 const IconBlock = styled.div`
   margin-left: 5%;
-  width: 200px;
+  max-width: 200px;
   display: flex;
   justify-content: space-around;
+`;
+const Link = styled.a`
+  margin: 0 5px;
 `;
 
 export const Footer = () => {
@@ -46,10 +51,18 @@ export const Footer = () => {
     <Container>
       <PinkSmile src={pinkSmile} alt={'smile'} />
       <IconBlock>
-        <Icon src={facebookSvg} />
-        <Icon src={twitterSvg} />
-        <Icon src={linkedinSvg} />
-        <Icon src={pinterestSvg} />
+        <Link href="https://facebook.com">
+          <Icon src={facebookSvg} />
+        </Link>
+        <Link href="https://twitter.com">
+          <Icon src={twitterSvg} />
+        </Link>
+        <Link href="https://www.linkedin.com/">
+          <Icon src={linkedinSvg} />
+        </Link>
+        <Link href="https://www.pinterest.com">
+          <Icon src={pinterestSvg} />
+        </Link>
       </IconBlock>
       <GreenSmile src={greenSmile} alt={'smile'} />
       <YellowSmile src={yellowSmile} alt={'smile'} />

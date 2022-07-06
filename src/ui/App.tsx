@@ -7,40 +7,57 @@ import mapSvg from './assets/map.svg';
 import yellowSmile from './assets/yellowSmile.svg';
 import yellowSmileDown from './assets/yellowSmileDown.svg';
 import pinkSmile from './assets/pinkSmile.svg';
+import { devices } from './mediaQuery/mediaQuery';
 
 const Container = styled.div`
   display: flex;
-  height: 100vh;
-  width: 100%;
+  text-align: center;
+  width: content-box;
   flex-direction: column;
   justify-content: space-between;
+  @media ${devices.tablet} {
+    display: flex;
+    height: 100vh;
+    text-align: center;
+    width: content-box;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 `;
 const Body = styled.div`
-  height: 80vh;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-const FormBlock = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  @media ${devices.tablet} {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
+
 const MapBlock = styled.div`
-  display: flex;
-  align-items: flex-start;
+  display: none;
+  @media ${devices.tablet} {
+    display: flex;
+    align-items: flex-start;
+  }
 `;
 const StyledSvgBlock = styled.div`
   align-self: center;
   display: flex;
+  justify-content: center;
 `;
 const Img = styled.img`
   max-width: 600px;
   max-height: 85vh;
 `;
 const YellowSmile = styled.img`
+  max-width: 122px;
+  max-height: 122px;
   position: absolute;
-  margin-top: -110px;
+  align-self: flex-start;
 `;
 const YellowSmileDown = styled.img`
   align-self: flex-start;
@@ -51,10 +68,8 @@ function App() {
   return (
     <Container className="App">
       <Body>
-        <FormBlock>
-          <YellowSmile src={yellowSmile} alt={'smile'} />
-          <Form />
-        </FormBlock>
+        <YellowSmile src={yellowSmile} alt={'smile'} />
+        <Form />
         <MapBlock>
           <StyledSvgBlock>
             <YellowSmileDown src={yellowSmileDown} alt={'smile'} />

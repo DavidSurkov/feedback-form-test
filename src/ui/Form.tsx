@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useEffect } from 'react';
+import styled, { css, keyframes } from 'styled-components';
 import { useTypedDispatch, useTypedSelector } from '../bll/store';
-import { submitFormTC } from '../bll/formReducer';
+import { setServerMessage, submitFormTC } from '../bll/formReducer';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 
@@ -10,7 +10,7 @@ const FormBlock = styled.form`
   display: flex;
   flex-direction: column;
   color: #2d2d2d;
-  margin-left: 25%;
+  margin-left: 10%;
 `;
 const Title = styled.div`
   font-weight: 400;
@@ -21,8 +21,6 @@ const Title = styled.div`
   /* or 18px */
 `;
 const Input = styled.input<{ error?: boolean }>`
-  max-width: 550px;
-  max-height: 90px;
   margin-top: 10px;
   border: ${(props) => (props.error ? '1px solid deeppink' : '1px solid rgba(220, 220, 220, 1)')};
   border-radius: 10px;
@@ -30,8 +28,6 @@ const Input = styled.input<{ error?: boolean }>`
   padding: 31px 46px;
 `;
 const Textarea = styled.textarea<{ error?: boolean }>`
-  max-width: 550px;
-  max-height: 190px;
   margin-top: 10px;
   border: ${(props) => (props.error ? '1px solid deeppink' : '1px solid rgba(220, 220, 220, 1)')};
   border-radius: 10px;
@@ -39,8 +35,29 @@ const Textarea = styled.textarea<{ error?: boolean }>`
   padding: 31px 46px 120px;
   font-size: 18px;
 `;
-const Button = styled.button`
+
+const circleAnimation = keyframes`
+  0% { width: 218px; height: 73px; opacity: 1; }
+  100% { width: 248px; height: 103px; opacity: 0; }
+`;
+const pseudoAfter = css`
+  content: '';
+  width: 218px;
+  height: 73px;
+  border-radius: 500px;
+  border: 6px solid #fad34f;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-name: ${circleAnimation};
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+`;
+const Button = styled.button<{ isLoading?: boolean }>`
   /* Rectangle 21 */
+  cursor: pointer;
   width: 218px;
   height: 73px;
   background: #fad34f;
@@ -48,6 +65,10 @@ const Button = styled.button`
   border: none;
   font-size: 18px;
   color: white;
+  position: relative;
+  &::after {
+    ${({ isLoading }) => isLoading && pseudoAfter}
+  }
 `;
 const ButtonBlock = styled.div`
   display: flex;
@@ -55,12 +76,23 @@ const ButtonBlock = styled.div`
   margin-top: 25px;
 `;
 const ErrorBlock = styled.div`
+  text-transform: uppercase;
+  background-color: #fad34f;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: deeppink;
+  color: white;
   font-weight: bold;
   margin-left: 10px;
+`;
+const ErrorSpan = styled.span`
+  color: deeppink;
+  height: 20px;
+`;
+const Block = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 export type FormType = {
@@ -81,9 +113,14 @@ const emailPattern = {
 };
 
 export const Form = () => {
-  const server = useTypedSelector((state) => state.form);
-
+  const serverMessage = useTypedSelector((state) => state.form.serverMessage);
+  const isLoading = useTypedSelector((state) => state.form.isLoading);
   const dispatch = useTypedDispatch();
+  useEffect(() => {
+    if (serverMessage.length) {
+      setTimeout(dispatch, 6000, setServerMessage([]));
+    }
+  }, [serverMessage]);
 
   const requiredMessage = (name: string): string => `${name} is required.`;
 
@@ -101,31 +138,42 @@ export const Form = () => {
   return (
     <FormBlock onSubmit={handleSubmit(onSubmit)}>
       <Title>Reach out to us!</Title>
-      <Input
-        error={!!errors.name}
-        {...register('name', { required: requiredMessage('Name'), minLength: minInputLength })}
-        placeholder={'Your name*'}
-      />
-      <Input
-        error={!!errors.email}
-        {...register('email', { required: requiredMessage('Email'), pattern: emailPattern })}
-        placeholder={'Your e-mail*'}
-      />
-      <Textarea
-        error={!!errors.message}
-        {...register('message', { required: requiredMessage('Message') })}
-        placeholder={'Your message*'}
-      />
+      <Block>
+        <Input
+          error={!!errors.name}
+          {...register('name', { required: requiredMessage('Name'), minLength: minInputLength })}
+          placeholder={'Your name*'}
+        />
+        <div style={{ height: '15px' }}>
+          <ErrorMessage name="name" errors={errors} render={({ message }) => <ErrorSpan>{message}</ErrorSpan>} />
+        </div>
+      </Block>
+      <Block>
+        <Input
+          error={!!errors.email}
+          {...register('email', { required: requiredMessage('Email'), pattern: emailPattern })}
+          placeholder={'Your e-mail*'}
+        />
+        <div style={{ height: '15px' }}>
+          <ErrorMessage name="email" errors={errors} render={({ message }) => <ErrorSpan>{message}</ErrorSpan>} />
+        </div>
+      </Block>
+      <Block>
+        <Textarea
+          error={!!errors.message}
+          {...register('message', { required: requiredMessage('Message') })}
+          placeholder={'Your message*'}
+        />
+        <div style={{ height: '15px' }}>
+          <ErrorMessage name="message" errors={errors} render={({ message }) => <ErrorSpan>{message}</ErrorSpan>} />
+        </div>
+      </Block>
       <ButtonBlock>
-        <Button>Send message</Button>
+        <Button isLoading={isLoading}>Send message</Button>
         <ErrorBlock>
-          <ErrorMessage name="name" errors={errors} render={({ message }) => <span>{message}</span>} />
-          <ErrorMessage name="email" errors={errors} render={({ message }) => <span>{message}</span>} />
-          <ErrorMessage name="message" errors={errors} render={({ message }) => <span>{message}</span>} />
-          {server.error?.map((e) => (
-            <span>{e}</span>
+          {serverMessage.map((e) => (
+            <span key={e + 1}>{e}</span>
           ))}
-          <span style={{ color: 'forestgreen' }}>{server.success}</span>
         </ErrorBlock>
       </ButtonBlock>
     </FormBlock>
