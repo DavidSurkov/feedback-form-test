@@ -15,10 +15,8 @@ const Container = styled.div`
   width: content-box;
   flex-direction: column;
   justify-content: space-between;
-  height: 80vh;
   @media ${devices.tablet} {
     display: flex;
-    height: 100vh;
     text-align: center;
     width: content-box;
     flex-direction: column;
