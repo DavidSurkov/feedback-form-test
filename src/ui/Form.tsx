@@ -4,13 +4,17 @@ import { useTypedDispatch, useTypedSelector } from '../bll/store';
 import { setServerMessage, submitFormTC } from '../bll/formReducer';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
+import { devices } from './mediaQuery/mediaQuery';
 
 const FormBlock = styled.form`
-  width: 550px;
+  max-width: 550px;
   display: flex;
   flex-direction: column;
   color: #2d2d2d;
-  margin-left: 10%;
+  @media ${devices.tablet} {
+    margin-left: 10%;
+    width: 550px;
+  }
 `;
 const Title = styled.div`
   font-weight: 400;

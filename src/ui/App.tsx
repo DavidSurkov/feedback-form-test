@@ -15,6 +15,7 @@ const Container = styled.div`
   width: content-box;
   flex-direction: column;
   justify-content: space-between;
+  height: 80vh;
   @media ${devices.tablet} {
     display: flex;
     height: 100vh;
@@ -54,10 +55,14 @@ const Img = styled.img`
   max-height: 85vh;
 `;
 const YellowSmile = styled.img`
-  max-width: 122px;
-  max-height: 122px;
-  position: absolute;
-  align-self: flex-start;
+  display: none;
+  @media ${devices.tablet} {
+    display: block;
+    max-width: 122px;
+    max-height: 122px;
+    position: absolute;
+    align-self: flex-start;
+  }
 `;
 const YellowSmileDown = styled.img`
   align-self: flex-start;

@@ -7,9 +7,13 @@ import pinterestSvg from './assets/icons/pinterest.svg';
 import greenSmile from './assets/greenSmile.svg';
 import yellowSmile from './assets/yellowSmile.svg';
 import pinkSmile from './assets/pinkSmile.svg';
+import { devices } from './mediaQuery/mediaQuery';
 
 const Container = styled.div`
-  position: relative;
+  height: 20vh;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
   background-color: rgba(250, 250, 250, 1);
   border: 1px solid rgba(216, 216, 216, 1);
   display: flex;
@@ -22,7 +26,10 @@ const Icon = styled.img``;
 const GreenSmile = styled.img`
   position: absolute;
   top: 0;
-  right: 10%;
+  right: 20%;
+  @media ${devices.tablet} {
+    right: 10%;
+  }
 `;
 
 const YellowSmile = styled.img`
@@ -31,19 +38,22 @@ const YellowSmile = styled.img`
 `;
 
 const PinkSmile = styled.img`
-  align-self: flex-start;
-  height: 200px;
-  width: 200px;
+  display: none;
+  @media ${devices.tablet} {
+    display: block;
+    align-self: flex-start;
+    height: 200px;
+    width: 200px;
+  }
 `;
 
 const IconBlock = styled.div`
   margin-left: 5%;
-  max-width: 200px;
   display: flex;
   justify-content: space-around;
 `;
 const Link = styled.a`
-  margin: 0 5px;
+  margin: 0 15px;
 `;
 
 export const Footer = () => {
