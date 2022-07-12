@@ -35,11 +35,11 @@ const Textarea = styled.textarea<{ error?: boolean }>`
   margin-top: 10px;
   border: ${(props) => (props.error ? '1px solid deeppink' : '1px solid rgba(220, 220, 220, 1)')};
   border-radius: 10px;
+  font-size: 18px;
+  resize: none;
   padding: 31px 46px 60px;
   @media ${devices.mobileL} {
-    resize: none;
     padding: 31px 46px 120px;
-    font-size: 18px;
   }
 `;
 
