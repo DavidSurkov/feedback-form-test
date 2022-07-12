@@ -35,7 +35,7 @@ const Textarea = styled.textarea<{ error?: boolean }>`
   margin-top: 10px;
   border: ${(props) => (props.error ? '1px solid deeppink' : '1px solid rgba(220, 220, 220, 1)')};
   border-radius: 10px;
-  padding: 31px 46px;
+  padding: 31px 46px 60px;
   @media ${devices.mobileL} {
     resize: none;
     padding: 31px 46px 120px;
@@ -79,8 +79,11 @@ const Button = styled.button<{ isLoading?: boolean }>`
 `;
 const ButtonBlock = styled.div`
   display: flex;
+  margin-top: 10px;
   justify-content: flex-start;
-  margin-top: 25px;
+  @media ${devices.mobileL} {
+    margin-top: 25px;
+  }
 `;
 const ErrorBlock = styled.div`
   text-transform: uppercase;
