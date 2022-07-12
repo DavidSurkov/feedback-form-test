@@ -35,9 +35,12 @@ const Textarea = styled.textarea<{ error?: boolean }>`
   margin-top: 10px;
   border: ${(props) => (props.error ? '1px solid deeppink' : '1px solid rgba(220, 220, 220, 1)')};
   border-radius: 10px;
-  resize: none;
-  padding: 31px 46px 120px;
-  font-size: 18px;
+  padding: 31px 46px;
+  @media ${devices.mobileL} {
+    resize: none;
+    padding: 31px 46px 120px;
+    font-size: 18px;
+  }
 `;
 
 const circleAnimation = keyframes`
